@@ -6,9 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Http\Requests\Auth\LogoutRequest;
 use App\Http\Requests\Auth\RegisterRequest;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -18,26 +20,23 @@ class AuthController extends Controller
         $user = $request->validated();
         $user['password'] = Hash::make($request->password);
         $createdUser = User::create($user);
-        $token = $createdUser->createToken('user_token')->plainTextToken;
 
         return response()->json([
-            'user' => $createdUser,
-            'token' => $token
+            'user' => new UserResource($createdUser)
         ], Response::HTTP_OK);
     }
 
     public function login(LoginRequest $request)
     {
         try {
-            $user = User::where('email', $request->email)->firstOrFail();
-            if(Hash::check($request->password, $user->password)) {
-                $token = $user->createToken('user_token')->plainTextToken;
+            $credentials = $request->validated();
 
+            if(Auth::attempt($credentials)) {
                 return response()->json([
-                    'user' => $user,
-                    'token' => $token
+                    'user' => Auth::user(),
                 ], Response::HTTP_OK);
             }
+
             return response()->json([
                 'message' => 'Email or password is not correct'
             ], Response::HTTP_UNAUTHORIZED);
@@ -49,12 +48,12 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(LogoutRequest $request)
+    public function logout(Request $request)
     {
         try {
-            $user = User::findOrFail($request->id);
-
-            $user->tokens()->delete();
+            Auth::guard('web')->logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
             return response()->json([
                 'message' => 'User logged out'
