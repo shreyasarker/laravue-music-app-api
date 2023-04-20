@@ -15,7 +15,7 @@ class UserController extends Controller
     public function getAuthUser()
     {
         try {
-            return new UserResource(Auth::guard('web')->user());
+            return new UserResource(Auth::user());
 
         } catch (\Exception $e) {
             return response()->json([
