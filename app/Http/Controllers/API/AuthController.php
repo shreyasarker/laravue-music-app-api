@@ -32,9 +32,7 @@ class AuthController extends Controller
             $credentials = $request->validated();
 
             if(Auth::attempt($credentials)) {
-                return response()->json([
-                    'user' => Auth::user(),
-                ], Response::HTTP_OK);
+                return new UserResource(Auth::user());
             }
 
             return response()->json([
