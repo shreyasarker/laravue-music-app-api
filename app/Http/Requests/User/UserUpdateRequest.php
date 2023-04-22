@@ -26,7 +26,14 @@ class UserUpdateRequest extends FormRequest
             'name' => 'required|string|max:255',
             'location' => 'nullable|string|max:255',
             'description' => 'nullable|string|max:1200',
-            'image' => 'required|string|min:6|confirmed'
+            'image' => 'nullable|image64:jpeg,jpg,png'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'image.image64' => 'The image must be a file of type: jpeg, jpg, png.'
         ];
     }
 }

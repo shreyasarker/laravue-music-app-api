@@ -24,27 +24,16 @@ class UserController extends Controller
         }
     }
 
-    public function show($id)
+    public function update(UserUpdateRequest $request)
     {
+        return $request->all();
         try {
-            $user = User::findOrFail($id);
-            return new UserResource($user);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function update(UserUpdateRequest $request, $id)
-    {
-        try {
+            $id = Auth::user()->id;
             $user = User::findOrFail($id);
             $user->update($request->validated());
 
              return response()->json([
-                'message' => 'User updated',
+                'message' => 'User updated!',
             ], Response::HTTP_OK);
 
         } catch (\Exception $e) {
