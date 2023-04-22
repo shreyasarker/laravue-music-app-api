@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UserRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class UserController extends Controller
         }
     }
 
-    public function update(UserRequest $request, $id)
+    public function update(UserUpdateRequest $request, $id)
     {
         try {
             $user = User::findOrFail($id);
