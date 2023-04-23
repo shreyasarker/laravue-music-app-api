@@ -32,8 +32,8 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::controller(VideoController::class)->group(function(){
+        Route::get('videos', 'index');
         Route::post('videos', 'store');
-        Route::get('videos/{id}', 'show');
         Route::delete('videos/{id}', 'destroy');
     });
 

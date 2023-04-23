@@ -12,6 +12,19 @@ use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
+    public function index()
+    {
+        try {
+            $songs = Video::where('user_id', Auth::user()->id)->get();
+            return VideoResource::collection($songs);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function store(VideoRequest $request)
     {
         try {
@@ -23,19 +36,6 @@ class VideoController extends Controller
             return response()->json([
                 'message' => 'Video saved successfully!'
             ], Response::HTTP_OK);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    public function show($id)
-    {
-        try {
-            $video = Video::findOrFail($id);
-            return new VideoResource($video);
 
         } catch (\Exception $e) {
             return response()->json([
