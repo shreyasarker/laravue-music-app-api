@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
+use App\Http\Controllers\API\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,5 +30,12 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::post('songs', 'store');
         Route::delete('songs/{id}', 'destroy');
     });
+
+    Route::controller(VideoController::class)->group(function(){
+        Route::post('videos', 'store');
+        Route::get('videos/{id}', 'show');
+        Route::delete('videos/{id}', 'destroy');
+    });
+
 });
 
