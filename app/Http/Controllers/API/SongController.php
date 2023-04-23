@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Song\SongRequest;
+use App\Http\Resources\SongResource;
 use App\Models\Song;
 use App\Services\SongService;
 use Illuminate\Http\Request;
@@ -12,6 +13,20 @@ use Illuminate\Support\Facades\Auth;
 
 class SongController extends Controller
 {
+
+    public function index()
+    {
+        try {
+            $songs = Song::where('user_id', Auth::user()->id)->get();
+            return SongResource::collection($songs);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function store(SongRequest $request, SongService $songService)
     {
         try {

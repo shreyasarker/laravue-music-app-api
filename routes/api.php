@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::controller(SongController::class)->group(function(){
+        Route::get('songs', 'index');
         Route::post('songs', 'store');
         Route::delete('songs', 'destroy');
     });
