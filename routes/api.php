@@ -18,7 +18,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('users/{id}', [UserController::class, 'getUserById']);
+Route::get('songs/{userId}', [SongController::class, 'getSongsByUserId']);
+Route::get('videos/{userId}', [VideoController::class, 'getVideosByUserId']);
+Route::get('posts/{userId}', [PostController::class, 'getPostsByUserId']);
+Route::get('posts-by-id/{id}', [PostController::class, 'show']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::controller(UserController::class)->group(function(){
@@ -40,8 +44,8 @@ Route::middleware('auth:sanctum')->group(function(){
 
     Route::controller(PostController::class)->group(function(){
         Route::get('posts', 'index');
-        Route::get('posts-by-user-id', 'postsByUserId');
-        Route::get('posts/{id}', 'show');
+
+
         Route::post('posts', 'store');
         Route::put('posts/{id}', 'update');
         Route::delete('posts/{id}', 'destroy');

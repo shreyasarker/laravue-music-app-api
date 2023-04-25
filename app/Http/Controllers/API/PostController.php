@@ -26,10 +26,10 @@ class PostController extends Controller
         }
     }
 
-    public function postsByUserId()
+    public function getPostsByUserId($userId)
     {
         try {
-            $posts = Post::where('user_id', Auth::user()->id)->get();
+            $posts = Post::where('user_id', $userId)->get();
             return PostResource::collection($posts);
 
         } catch (\Exception $e) {

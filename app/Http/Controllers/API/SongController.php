@@ -27,6 +27,19 @@ class SongController extends Controller
         }
     }
 
+    public function getSongsByUserId($userId)
+    {
+        try {
+            $songs = Song::where('user_id', $userId)->get();
+            return SongResource::collection($songs);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function store(SongRequest $request, SongService $songService)
     {
         try {

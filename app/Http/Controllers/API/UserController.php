@@ -25,6 +25,19 @@ class UserController extends Controller
         }
     }
 
+    public function getUserById($userId)
+    {
+        try {
+            $user = User::findOrFail($userId);
+            return new UserResource($user);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
     public function update(UserUpdateRequest $request, ImageService $imageService)
     {
         try {
