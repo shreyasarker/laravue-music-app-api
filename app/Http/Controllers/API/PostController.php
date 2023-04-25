@@ -16,7 +16,7 @@ class PostController extends Controller
     public function index()
     {
         try {
-            $posts = Post::query()->paginate(2);
+            $posts = Post::query()->paginate(9);
             return PostResource::collection($posts);
 
         } catch (\Exception $e) {
