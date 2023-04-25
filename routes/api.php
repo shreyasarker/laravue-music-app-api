@@ -23,6 +23,7 @@ Route::get('songs/{userId}', [SongController::class, 'getSongsByUserId']);
 Route::get('videos/{userId}', [VideoController::class, 'getVideosByUserId']);
 Route::get('posts/{userId}', [PostController::class, 'getPostsByUserId']);
 Route::get('posts-by-id/{id}', [PostController::class, 'show']);
+Route::get('posts', 'index');
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::controller(UserController::class)->group(function(){
@@ -31,21 +32,16 @@ Route::middleware('auth:sanctum')->group(function(){
     });
 
     Route::controller(SongController::class)->group(function(){
-        Route::get('songs', 'index');
         Route::post('songs', 'store');
         Route::delete('songs/{id}', 'destroy');
     });
 
     Route::controller(VideoController::class)->group(function(){
-        Route::get('videos', 'index');
         Route::post('videos', 'store');
         Route::delete('videos/{id}', 'destroy');
     });
 
     Route::controller(PostController::class)->group(function(){
-        Route::get('posts', 'index');
-
-
         Route::post('posts', 'store');
         Route::put('posts/{id}', 'update');
         Route::delete('posts/{id}', 'destroy');

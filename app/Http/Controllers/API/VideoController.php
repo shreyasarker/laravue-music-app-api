@@ -12,19 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 class VideoController extends Controller
 {
-    public function index()
-    {
-        try {
-            $videos = Video::where('user_id', Auth::user()->id)->get();
-            return VideoResource::collection($videos);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => $e->getMessage()
-            ], Response::HTTP_INTERNAL_SERVER_ERROR);
-        }
-    }
-
     public function getVideosByUserId($userId)
     {
         try {
