@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\VideoController;
@@ -35,6 +36,15 @@ Route::middleware('auth:sanctum')->group(function(){
         Route::get('videos', 'index');
         Route::post('videos', 'store');
         Route::delete('videos/{id}', 'destroy');
+    });
+
+    Route::controller(PostController::class)->group(function(){
+        Route::get('posts', 'index');
+        Route::get('posts-by-user-id', 'postsByUserId');
+        Route::get('posts/{id}', 'show');
+        Route::post('posts', 'store');
+        Route::put('posts/{id}', 'update');
+        Route::delete('posts/{id}', 'destroy');
     });
 
 });
