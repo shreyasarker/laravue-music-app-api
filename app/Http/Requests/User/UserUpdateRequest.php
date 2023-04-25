@@ -22,12 +22,17 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
+        $image = $this->image;
+        $rules = [
             'name' => 'required|string|max:255',
             'location' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:1200',
-            'image' => 'nullable|image64:jpeg,jpg,png'
+            'description' => 'nullable|string|max:1200'
         ];
+
+        if($image && (preg_match('/^https?:\/\/\w+(\.\w+)*(:[0-9]+)?(\/.*)?$/', $image) === 0)) {
+            $rules['image'] = 'nullable|image64:jpeg,jpg,png';
+        }
+        return $rules;
     }
 
     public function messages()

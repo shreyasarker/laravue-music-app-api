@@ -34,4 +34,11 @@ class PostRequest extends FormRequest
         }
         return $rules;
     }
+
+    public function messages()
+    {
+        return [
+            'image.image64' => 'The image must be a file of type: jpeg, jpg, png.'
+        ];
+    }
 }

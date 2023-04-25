@@ -30,17 +30,17 @@ class UserController extends Controller
         try {
             $user = Auth::user();
             $data = $request->validated();
-            if ($request->image) {
+            if (isset($data['image'])) {
                 if($user->image){
                     $imageService->removeImage($user->image);
                 }
-                $path = $imageService->uploadImage($request->image, $request->name, 'public/images/users');
+                $path = $imageService->uploadImage($data['image'], $request->name, 'public/images/users');
                 $data['image'] = $path;
             }
             $user->update($data);
 
              return response()->json([
-                'message' => 'User updated!',
+                'message' => 'Profile updated successfully!',
             ], Response::HTTP_OK);
 
         } catch (\Exception $e) {
