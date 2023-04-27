@@ -23,7 +23,7 @@ Route::get('songs/{userId}', [SongController::class, 'getSongsByUserId']);
 Route::get('videos/{userId}', [VideoController::class, 'getVideosByUserId']);
 Route::get('posts/{userId}', [PostController::class, 'getPostsByUserId']);
 Route::get('posts-by-id/{id}', [PostController::class, 'show']);
-Route::get('posts', 'index');
+Route::get('posts', [PostController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::controller(UserController::class)->group(function(){
