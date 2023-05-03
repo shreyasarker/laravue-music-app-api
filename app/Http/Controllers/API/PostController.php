@@ -46,7 +46,7 @@ class PostController extends Controller
             $data['user_id'] = Auth::user()->id;
 
             if ($request->image) {
-                $path = $imageService->uploadImage($request->image, Auth::user()->name, 'public/images/posts');
+                $path = $imageService->uploadImage($request->image);
                 $data['image'] = $path;
             }
             Post::create($data);
