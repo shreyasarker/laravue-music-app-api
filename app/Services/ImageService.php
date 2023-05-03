@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ImageService
@@ -16,6 +14,7 @@ class ImageService
         $url = Cloudinary::upload($image64, [
             'folder' => 'LaraVueMusicApp'
         ])->getSecurePath();
+
         return $url;
     }
 
@@ -24,6 +23,7 @@ class ImageService
         $path = explode('/', $imagePath);
         $fileIdWithExtension = explode('.', $path[sizeof($path)-1]);
         $fileId = $fileIdWithExtension[0];
+
         return Cloudinary::destroy('LaraVueMusicApp/'.$fileId);
     }
 }

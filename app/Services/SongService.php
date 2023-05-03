@@ -2,22 +2,25 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class SongService
 {
-    public function uploadSong($song, $songPath)
+    public function uploadSong($song)
     {
-        $songName = $song->getClientOriginalName();
-        Storage::putFileAs($songPath, $song, $songName);
-        $url = Storage::url($songPath . '/' . $songName);
+        $url = Cloudinary::uploadFile($song->getRealPath(), [
+            'folder' => 'LaraVueMusicApp'
+        ])->getSecurePath();
+
         return $url;
     }
 
     public function removeSong($songPath)
     {
-        return File::delete(public_path($songPath));
+        $path = explode('/', $songPath);
+        $fileIdWithExtension = explode('.', $path[sizeof($path)-1]);
+        $fileId = $fileIdWithExtension[0];
 
+        return Cloudinary::destroy('LaraVueMusicApp/'.$fileId, ["resource_type" => "video"]);
     }
 }

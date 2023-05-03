@@ -18,7 +18,7 @@ class SongResource extends JsonResource
             'id' => $this->id,
             'artist' => $this->user->name,
             'name' => $this->title,
-            'url' => asset($this->song)
+            'url' => $this->song
         ];
     }
 }

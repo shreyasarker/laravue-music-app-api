@@ -31,7 +31,7 @@ class SongController extends Controller
         try {
             $data = $request->validated();
             $data['user_id'] = Auth::user()->id;
-            $path = $songService->uploadSong($request->song, 'public/songs');
+            $path = $songService->uploadSong($request->song);
             $data['song'] = $path;
             Song::create($data);
 
