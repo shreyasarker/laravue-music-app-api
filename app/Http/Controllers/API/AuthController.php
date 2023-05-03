@@ -27,15 +27,19 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $credentials = $request->validated();
+            $user = User::where('email', $request->email)->first();
 
-            if(Auth::attempt($credentials)) {
-                return new UserResource(Auth::user());
+            if (! $user || ! Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'message' => 'Email or password is not correct'
+                ], Response::HTTP_UNAUTHORIZED);
             }
 
+            $token = $user->createToken('laravue-music-app-api')->plainTextToken;
             return response()->json([
-                'message' => 'Email or password is not correct'
-            ], Response::HTTP_UNAUTHORIZED);
+                'user' => new UserResource($user),
+                'token' => $token
+            ]);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -47,10 +51,10 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         try {
-            Auth::logout();
-            $request->session()->invalidate();
-            $request->session()->regenerateToken();
-
+            $user = $request->user();
+            if($user) {
+                $request->user()->tokens()->delete();
+            }
             return response()->json([
                 'message' => 'User logged out'
             ], Response::HTTP_OK);

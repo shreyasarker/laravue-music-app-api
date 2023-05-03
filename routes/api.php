@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\PostController;
 use App\Http\Controllers\API\SongController;
 use App\Http\Controllers\API\UserController;
@@ -17,6 +18,12 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::controller(AuthController::class)->group(function(){
+    Route::post('register', 'register');
+    Route::post('login', 'login');
+    Route::post('logout', 'logout');
+});
 
 Route::get('users/{id}', [UserController::class, 'getUserById']);
 Route::get('songs/{userId}', [SongController::class, 'getSongsByUserId']);
