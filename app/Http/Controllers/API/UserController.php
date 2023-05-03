@@ -47,7 +47,7 @@ class UserController extends Controller
                 if($user->image){
                     $imageService->removeImage($user->image);
                 }
-                $path = $imageService->uploadImage($data['image'], $request->name, 'public/images/users');
+                $path = $imageService->uploadImage($data['image']);
                 $data['image'] = $path;
             }
             $user->update($data);
